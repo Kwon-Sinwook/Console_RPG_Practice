@@ -5,9 +5,9 @@ namespace Console_RPG
 {
     class Program
     {
-        public class Shop_Item
+        public class Shop_Item // 상점의 아이템과 정보를 담은 클래스
         {
-            public List<List<string>> itemList = new List<List<string>>()
+            public List<List<string>> itemList = new List<List<string>>() // 2차원 리스트로 아이템 정보를 저장하는 코드, 맨 마지막은 장착 여부를 의미한다.
             {
                new List<string>() {"수련자 갑옷",     "방어력", "5",  "수련에 도움을 주는 갑옷입니다.",                    "1000", "X"},
                new List<string>() {"무쇠갑옷",        "방어력", "9",  "무쇠로 만들어져 튼튼한 갑옷입니다",                 "150",  "X"},
@@ -26,14 +26,14 @@ namespace Console_RPG
             public int offense = 10;
             public int defense = 5;
             public int health = 100;
-            int gold = 1500;
+            int gold = 1500;              // 기본 정보를 가지는 변수들이다.
 
-            public int add_offense = 0;
-            public int add_defense = 0;
+            public int add_offense = 0;   // 장비로 인한 추가 공격력 저장 변수
+            public int add_defense = 0;   // 장비로 인한 추가 방어력 저장 변수
 
-            public List<List<string>> haveItem = new List<List<string>>();
-            public Shop_Item shop_item = new Shop_Item();
-            public void View_rtan()
+            public List<List<string>> haveItem = new List<List<string>>(); // 현재 플레이어가 가진 아이템 저장 리스트이다.
+            public Shop_Item shop_item = new Shop_Item(); // 상점 아이템을 가져오기 위한 코드
+            public void View_rtan() // 상태를 보기 위한 메소드
             {
                 while (true)
                 {
@@ -43,12 +43,12 @@ namespace Console_RPG
                     Console.WriteLine("Lv. {0}", level);
                     Console.WriteLine("{0} ( 전사 )", name);
 
-                    if (add_offense != 0)
+                    if (add_offense != 0)     //추가 공격력이 존재한다면 추가 공격력도 출력
                         Console.WriteLine("공격력 : {0} (+{1})", offense, add_offense);
 
                     else Console.WriteLine("공격력 : {0}", offense);
 
-                    if (add_defense != 0)
+                    if (add_defense != 0)     //추가 방어력이 존재한다면 추가 방어력도 출력
                         Console.WriteLine("방어력 : {0} (+{1})", defense, add_defense);
 
                     else Console.WriteLine("방어력 : {0}", defense);
@@ -65,7 +65,7 @@ namespace Console_RPG
 
             }
 
-            public void View_Inventory()
+            public void View_Inventory()   // 인벤토리 확인 아이템
             {
                 while (true)
                 {
@@ -76,7 +76,7 @@ namespace Console_RPG
                     Console.WriteLine("[아이템 목록]");
 
 
-                    foreach (var a in haveItem)
+                    foreach (var a in haveItem) // 현재 내가 가진 아이템 정보 확인
                     {
                         Console.WriteLine("- {0} | {1} +{2} | {3}", a[0], a[1], a[2], a[3]);
                     }
@@ -88,7 +88,7 @@ namespace Console_RPG
                     int input = int.Parse(Console.ReadLine());
 
                     if (input == 1)
-                        Equipment_Management();
+                        Equipment_Management(); // 장착 관리 메소드로 이동
 
                     else if (input == 0)
                         break;
@@ -119,20 +119,20 @@ namespace Console_RPG
 
                     int input = int.Parse(Console.ReadLine());
 
-                    if (0 < input && input < number)
+                    if (0 < input && input < number) // 사용자가 [장착/해제]를 할 아이템 번호를 누르면 작동
                     {
-                        if (haveItem[input - 1][5] == "X")
+                        if (haveItem[input - 1][5] == "X") // 만일 장착하지 않았다면
                         {
-                            haveItem[input - 1][5] = "Y";
-                            haveItem[input - 1][0] = "[E]" + haveItem[input - 1][0];
+                            haveItem[input - 1][5] = "Y";                               //장착 여부를 Y로 바꾸고
+                            haveItem[input - 1][0] = "[E]" + haveItem[input - 1][0];    //장비 이름 앞에 [E] 추가
 
-                            switch (haveItem[input - 1][1])
+                            switch (haveItem[input - 1][1]) // 아이템 정보의 2번째 값이 공격력인지 방어력인지 확인하는 switch문
                             {
                                 case "공격력":
                                     {
-                                        int value = int.Parse(haveItem[input - 1][2]);
+                                        int value = int.Parse(haveItem[input - 1][2]); // 아이템 정보에서 추가 능력치를 가져오는 코드
                                         offense += value;
-                                        add_offense += value;
+                                        add_offense += value; // 기존 공격력에 더한 뒤, 추가 공격력에도 저장한다.
                                         break;
                                     }
 
@@ -140,7 +140,7 @@ namespace Console_RPG
                                     {
                                         int value = int.Parse(haveItem[input - 1][2]);
                                         defense += value;
-                                        add_defense += value;
+                                        add_defense += value; // 기존 방어력에 더한 뒤, 추가 방어력에도 저장한다.
                                         break;
                                     }
                             }
@@ -148,8 +148,8 @@ namespace Console_RPG
 
                         else
                         {
-                            haveItem[input - 1][5] = "X";
-                            haveItem[input - 1][0] = haveItem[input - 1][0].Replace("[E]", "");
+                            haveItem[input - 1][5] = "X";                                       //이미 장착이 된 상태라면, 장착 여부를 X로 바꾼다.
+                            haveItem[input - 1][0] = haveItem[input - 1][0].Replace("[E]", ""); //이름에 붙은 [E]를 제거한다
 
                             switch (haveItem[input - 1][1])
                             {
@@ -181,7 +181,7 @@ namespace Console_RPG
             }
 
 
-            public void Go_shop()
+            public void Go_shop() // 상점으로 이동하는 메소드
             {
                 while (true)
                 {
@@ -194,7 +194,7 @@ namespace Console_RPG
 
                     Console.WriteLine("[아이템 목록]");
 
-                    foreach (var a in shop_item.itemList)
+                    foreach (var a in shop_item.itemList) // 상점의 아이템 목록을 가져온다.
                     {
                         Console.WriteLine("- {0} | {1} +{2} | {3} | {4}", a[0], a[1], a[2], a[3], a[4]);
                     }
@@ -208,7 +208,7 @@ namespace Console_RPG
                     int input = int.Parse(Console.ReadLine());
 
                     if (input == 1)
-                        Buy_item();
+                        Buy_item(); // 아이템 구매 메소드 출력
 
                     else if (input == 0)
                         break;
@@ -241,25 +241,25 @@ namespace Console_RPG
 
                     int input = int.Parse(Console.ReadLine());
 
-                    if (0 < input && input < number)
+                    if (0 < input && input < number) // 사용자가 아이템을 선택했을 시 진입
                     {
-                        if (shop_item.itemList[input - 1][4] == "구매 완료")
+                        if (shop_item.itemList[input - 1][4] == "구매 완료") // 우선 선택한 아이템이 이미 구매했던 아이템인지 확인
                         {
                             Console.WriteLine("이미 구매한 아이템입니다.");
                             Thread.Sleep(1000);
                             continue;
                         }
 
-                        int price = int.Parse(shop_item.itemList[input - 1][4]);
+                        int price = int.Parse(shop_item.itemList[input - 1][4]); // 구매했던 아이템이 아니면, 아이템의 가격 값 저장
 
-                        if (haveItem.Count == 0)
+                        if (haveItem.Count == 0) // 내가 가진 아이템이 하나도 없었다면
                         {
 
                             if (gold > price)
                             {
-                                gold -= price;
-                                shop_item.itemList[input - 1][4] = "구매 완료";
-                                haveItem.Add(shop_item.itemList[input - 1]);
+                                gold -= price;   //소지금에서 가격 빼기
+                                shop_item.itemList[input - 1][4] = "구매 완료"; // 구매한 아이템의 가격 정보를 구매 완료로 바꾸기
+                                haveItem.Add(shop_item.itemList[input - 1]); // 내가 가진 아이템 리스트에 추가.
                                 Console.WriteLine("구매를 완료했습니다.");
                             }
 
@@ -296,7 +296,7 @@ namespace Console_RPG
 
         static void Main(string[] args)
         {
-            Player rtan = new Player();
+            Player rtan = new Player(); // Player형 변수 rtan을 선언한다.
 
             while (true)
             {
@@ -314,15 +314,15 @@ namespace Console_RPG
                 switch (input)
                 {
                     case 1:
-                        rtan.View_rtan();
+                        rtan.View_rtan(); // 상태 보기로 이동
                         break;
 
                     case 2:
-                        rtan.View_Inventory();
+                        rtan.View_Inventory(); // 인벤토리로 이동
                         break;
 
                     case 3:
-                        rtan.Go_shop();
+                        rtan.Go_shop(); // 상점으로 이동
                         break;
 
                     default:
@@ -334,5 +334,3 @@ namespace Console_RPG
         }
     }
 }
-
-//헤헤
